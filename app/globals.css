@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: var(--font-link-sans);
+  --scrollbar-track: #eef2e5;
+  --scrollbar-thumb: #254f1a;
+  --scrollbar-thumb-hover: #d2e823;
+}
+
+html {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 3px solid var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+button:hover {
+  cursor: pointer;
+}
