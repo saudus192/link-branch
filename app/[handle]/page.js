@@ -6,7 +6,7 @@ import GradientBackground from '@/components/gradientbackground';
 export default async function Page({ params }) {
     const { handle } = await params;
 
-    const request = await fetch(`http://localhost:3000/api/profiles?handle=${handle}`, {
+    const request = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/profiles?handle=${handle}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
