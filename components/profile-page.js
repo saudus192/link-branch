@@ -10,7 +10,7 @@ import { useState } from 'react';
 const ProfilePage = ({ profile }) => {
     const pathname = usePathname()
     const [copySuccess, setCopySuccess] = useState(false);
-    const basepathname = process.env.NEXT_PUBLIC_URL
+    const basepathname = process.env.NEXT_PUBLIC_URL.replace(/^https?:\/\//, "")
     const fullpathname = basepathname + pathname
 
     const copyHandle = () => {
