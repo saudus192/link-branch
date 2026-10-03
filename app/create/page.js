@@ -35,17 +35,22 @@ const Page = () => {
   const [createdHandle, setCreatedHandle] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
 
   const claimHandle = async () => {
+    if (isClaiming) return;
+    setIsClaiming(true);
     try {
       // Check if handle is empty
       if (!handle) {
         showToast('Handle cannot be empty. Please enter a handle and try again.', 'validation');
+        setIsClaiming(false);
         return;
       }
       // if space in handle, alert user
       if (handle.includes(' ')) {
         showToast('Handle cannot contain spaces. Please remove any spaces and try again.', 'validation');
+        setIsClaiming(false);
         return;
       }
       const normalizedHandle = handle.toLowerCase();
@@ -59,12 +64,15 @@ const Page = () => {
       if (data.exists) {
         showToast('Handle is already taken. Please choose another one.', 'validation');
         setHandle(''); // Clear the handle input if taken
+        setIsClaiming(false);
       } else {
         showToast('Handle is available! You can proceed to create your profile.', 'success');
+        setIsClaiming(false);
       }
     } catch (error) {
       console.error('Error claiming handle:', error);
       showToast('Failed to claim handle. Please try again.', 'error');
+      setIsClaiming(false);
     }
 
   };
@@ -154,8 +162,15 @@ const Page = () => {
               <motion.input whileFocus={{ scale: 1.01 }} transition={{ duration: 0.15 }} className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" id="handle" name="handle" placeholder="Enter your handle" value={handle} onChange={(e) => setHandle(e.target.value)} />
             </motion.div>
             {/* Claim button */}
-            <motion.button variants={itemVariants} whileHover={buttonMotion.whileHover} whileTap={buttonMotion.whileTap} className="text-white bg-linear-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-linear-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-md text-sm px-4 py-2.5 text-center leading-5 mb-5" type="button" onClick={claimHandle}>
-              Claim Handle
+            <motion.button variants={itemVariants} whileHover={buttonMotion.whileHover} whileTap={buttonMotion.whileTap} className="text-white bg-linear-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-linear-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-md text-sm px-4 py-2.5 text-center leading-5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mb-5" type="button" onClick={claimHandle} disabled={isClaiming}>
+              {isClaiming ? (
+                <>
+                  <Loader2 className="animate-spin" size={16} />
+                  Claiming...
+                </>
+              ) : (
+                'Claim Handle'
+              )}
             </motion.button>
             <motion.h1 variants={itemVariants} className="text-xl font-semibold">Step 2: Upload a Profile Picture</motion.h1>
             {/* Upload your profile picture */}
